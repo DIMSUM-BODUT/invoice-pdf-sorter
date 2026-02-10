@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Packing Tool</title>
+  <style>
+    body{margin:0;font-family:Arial;background:linear-gradient(135deg,#5b6cfb,#7a4fe8);min-height:100vh;display:flex;align-items:center;justify-content:center}
+    .card{background:#fff;width:min(900px,92vw);border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .drop{margin-top:18px;border:2px dashed #8aa0ff;border-radius:12px;padding:40px;text-align:center;background:#f6f8ff}
+    .btn{margin-top:16px;width:180px;height:44px;border-radius:10px;border:none;background:#5b6cfb;color:#fff;cursor:pointer}
+    .btn:disabled{background:#bbb;cursor:not-allowed}
+    .muted{color:#666}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 style="margin:0">📦 Packing Tool</h1>
+    <p class="muted" style="margin:8px 0 0">Upload invoice PDF → sortir → download hasil</p>
+
+    <div class="drop" id="drop">
+      <input id="file" type="file" accept="application/pdf" />
+      <div id="name" class="muted" style="margin-top:10px">Klik atau drag & drop PDF di sini</div>
+    </div>
+
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <label>Sort:</label>
+      <select id="mode">
+        <option value="sku">SKU (A–Z)</option>
+        <option value="qty">Total Qty (kecil → besar)</option>
+      </select>
+      <label><input type="checkbox" id="desc" /> Descending</label>
+    </div>
+
+    <button class="btn" id="process" disabled>🚀 Proses</button>
+
+    <p class="muted" style="margin-top:14px;font-size:12px">
+      Catatan: versi awal ini baru UI. Next step: kita tambahin fungsi baca SKU+Qty & generate PDF.
+    </p>
+  </div>
+
+  <script>
+    const fileEl = document.getElementById('file');
+    const drop = document.getElementById('drop');
+    const nameEl = document.getElementById('name');
+    const btn = document.getElementById('process');
+
+    function setFile(f){
+      window._file = f;
+      nameEl.textContent = f ? ("✅ " + f.name) : "Klik atau drag & drop PDF di sini";
+      btn.disabled = !f;
+    }
+
+    fileEl.addEventListener('change', (e)=>setFile(e.target.files[0]));
+
+    drop.addEventListener('dragover', (e)=>{e.preventDefault();});
+    drop.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      setFile(e.dataTransfer.files[0]);
+    });
+
+    btn.addEventListener('click', ()=>{
+      alert("Next step: kita pasang engine PDF (sort by SKU / qty) lalu download hasil.");
+    });
+  </script>
+</body>
+</html>
+
